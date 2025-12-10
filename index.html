@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Riya Birthday Celebration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comforter+Brush&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --pink:#ff2f81;
+            --soft:#ffdff0;
+            --card:#ffffffee;
+            --glass: rgba(255,255,255,0.25);
+        }
+        *{box-sizing:border-box}
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #ff9ecb, #ffd3e6, #ffe6f3);
+            padding: 22px;
+            overflow-x: hidden;
+            min-height:100vh;
+            position:relative;
+        }
+        header{margin-bottom:10px}
+        h1 {
+            font-size: 40px;
+            color: var(--pink);
+            text-shadow: 2px 2px 18px rgba(255,255,255,0.8);
+            margin:0;
+        }
+        h3{margin:6px 0 18px; color:#aa2b66}
+
+        .container{max-width:980px;margin:0 auto}
+
+        .slide {
+            display: none;
+            background: var(--card);
+            padding: 34px;
+            border-radius: 22px;
+            width: 90%;
+            margin: 18px auto;
+            box-shadow: 0 8px 30px rgba(255, 80, 150, 0.12);
+            opacity: 0;
+            transform: translateY(10px) scale(0.99);
+            transition: opacity 0.6s, transform 0.6s;
+        }
+        .active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+        button {
+            margin: 6px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background: linear-gradient(90deg,var(--pink),#ff6fa5);
+            color: white;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(255,30,120,0.18);
+        }
+        .icon-btn{display:inline-flex;align-items:center;gap:8px}
+        .small{padding:8px 12px;font-size:14px}
+
+        img {
+            width: 320px;
+            max-width:90%;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            transition: transform 0.45s, filter 0.45s;
+        }
+        img:hover{transform:translateY(-6px) scale(1.03)}
+
+        /* floating hearts & bubbles */
+        .floating{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+        .bubble{position:absolute;border-radius:50%;background:radial-gradient(circle at 30% 30%, #fff8, #fff0);opacity:0.6}
+
+        /* confetti & fireworks canvases */
+        canvas{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:9999}
+
+        /* modal (surprise) */
+        .modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.8);background:var(--card);padding:22px;border-radius:18px;box-shadow:0 12px 40px rgba(0,0,0,0.25);display:none;z-index:5}
+        .modal.show{display:block;animation:pop 350ms cubic-bezier(.2,.8,.2,1) forwards}
+        @keyframes pop{to{transform:translate(-50%,-50%) scale(1)}}
+
+        /* Dear letter */
+        .letter{font-family:'Comforter Brush', cursive;font-size:26px;color:#b02e70;padding:18px}
+
+        /* responsive */
+        @media (max-width:600px){
+            img{width:260px}
+            .slide{padding:20px}
+            h1{font-size:30px}
+        }
+
+    </style>
+</head>
+<body>
+    <div class="floating" aria-hidden="true"></div>
+    <canvas id="confettiCanvas"></canvas>
+    <canvas id="fireCanvas"></canvas>
+
+    <div class="container">
+        <header>
+            <h1>💖 Happy Birthday Riya 💖</h1>
+            <h3>From your friend Anshu</h3>
+        </header>
+
+        <!-- slides (kept filenames same: 1.jpg 2.jpg 3.jpg cake.png cake2.png aesthetic.jpg) -->
+        <div class="slide active" id="slide1">
+    <img src=https://media.tenor.com/LJcUNGpO9s0AAAAm/dudu-flowers-rose-dudu.webp style="width:120px; float:right; border-radius:15px;" />
+            <h2>🎀 Welcome Riya 🎀</h2>
+            <p>Today is a very special day… your birthday! 💖</p>
+        </div>
+
+        <div class="slide" id="slide2">
+    <img src=https://media.tenor.com/zWf6SAmyLJQAAAAm/dudu-bubu-cute-gif.webp style="width:120px; float:left; border-radius:15px;" />
+            <h2>🌸.....🌸</h2>
+            <p>Riya, you're one of the sweetest, pure-hearted and happiest souls! 🥺💗</p>
+        </div>
+
+        <div class="slide" id="slide3">
+    <img src=https://media.tenor.com/ScOwzW70wHIAAAAm/bubu.webp style="width:120px; float:right; border-radius:15px;" />
+            <h2>✨.......✨</h2>
+            <p>I'm always blessed to have you as a friend. Aap hamesha khush raho, muskurati raho. 💕</p>
+        </div>
+
+        <div class="slide" id="slide4">
+    <img src=https://media.tenor.com/fk_csBjglDEAAAAm/bubu-dudu-sseeyall.webp style="width:120px; float:left; border-radius:15px;" />
+            <h2>📸 Beautiful You 📸</h2>
+            <img src="1.jpg" alt="Riya picture 1">
+        </div>
+
+        <div class="slide" id="slide5">
+            <h2>💞 Another Cute Pic 💞</h2>
+            <img src="2.jpg" alt="Riya picture 2">
+        </div>
+
+        <div class="slide" id="slide6">
+            <h2>💗 One More 💗</h2>
+            <img src="3.jpg" alt="Riya picture 3">
+        </div>
+
+        <div class="slide" id="slide7">
+            <h2>🌟 Reasons Why You Are Special 🌟</h2>
+            <ul style="text-align:left;display:inline-block;margin:12px 0;font-size:18px">
+                <li>✨ You care deeply for everyone</li>
+                <li>✨ You spread positivity everywhere</li>
+                <li>✨ You are genuine and kind-hearted</li>
+                <li>✨ You make people feel valued</li>
+                <li>✨ Your smile brightens everyone’s day</li>
+            </ul>
+        </div>
+
+        <div class="slide" id="slide8">
+            <h2>🤝.......🤝</h2>
+            <p>Riya, thank you for being such a wonderful friend. Your presence adds joy, comfort, and warmth. 💗</p>
+        </div>
+
+        <div class="slide" id="slide9">
+            <h2>🎉 Birthday Wishes 🎉</h2>
+            <p>May your life be filled with love, success, joy, and endless smiles. May God bless you with everything your heart desires. 💕</p>
+        </div>
+
+        <!-- Dear Riya Letter -->
+        <div class="slide" id="slide10">
+            <h2>💌 A Special Letter 💌</h2>
+            <div class="letter">Dear Riya,<br><br>
+                On your birthday I wish you all the colours of happiness. You are cherished more than words can say. Keep shining, keep smiling — always.<br><br>
+                Love, Anshu 💖
+            </div>
+        </div>
+
+        <div class="slide" id="slide11">
+            <h2>Cake Cutting Time 🎂💖</h2>
+            <p>Click the button to cut the cake!</p>
+            <img id="cakeImg" src="cake.png" alt="cake">
+            <br><br>
+            <button class="icon-btn" onclick="cutCake()">🍰 Cut Cake</button>
+            <button class="small" onclick="openSurprise()">🎁 Surprise</button>
+        </div>
+
+        <div class="slide" id="slide12">
+            <h2>🎉 Celebration 🎉</h2>
+            <p>Cake is cut! Let the happiness begin! 💕🥳</p>
+        </div>
+        <!-- Gift Slide Start -->
+<div class="slide" id="slide13">
+    <h2 style="font-family:'Poppins', sans-serif; font-size:32px; margin-bottom:20px; color:#ff4fa1;">🎁 A Special Gift For You!</h2>
+
+    <!-- Gift Box Closed -->
+    <div id="closedGift" onclick="openGift()" style="cursor:pointer;">
+        <img src="https://img.freepik.com/premium-photo/beautifully-wrapped-light-pink-color-gift-box-with-shimmering-gold-ribbon-tied-graceful-bo_546540-1474.jpg" width="200" />
+        <p style="font-size:18px; font-weight:600; color:#444;">Tap to open your surprise 🎁</p>
+    </div>
+
+    <!-- Gift Opened -->
+    <div id="openedGift" style="display:none; margin-top:20px;">
+        <img 
+        onclick="enlargeGift('https://cdn.uaeflowers.com/uploads/product/uaeflowers/9125_60_9125.webp')"
+        style="cursor:pointer;"
+        src="https://cdn.uaeflowers.com/uploads/product/uaeflowers/9125_60_9125.webp" 
+        width="200" />
+        <h3 style="margin-top:20px; font-size:24px; color:#ff2e93;">Here are your virtual gifts 💗</h3>
+
+        <div style="display:flex; justify-content:center; gap:30px; margin-top:25px; flex-wrap:wrap;">
+        <div style="width:250px; padding:15px; background:#fff1f8; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+        <img
+    onclick="enlargeGift('https://hips.hearstapps.com/hmg-prod/images/birthday-gifts-for-best-friend-640b8e96bad3a.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*')" 
+    style="cursor:pointer;" 
+    src="https://hips.hearstapps.com/hmg-prod/images/birthday-gifts-for-best-friend-640b8e96bad3a.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*" 
+    width="140" 
+    height="180" 
+        />
+                
+            </div>
+            
+            <div style="width:250px; padding:15px; background:#fff1f8; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+                <img 
+                 onclick="enlargeGift('https://static-assets-prod.fnp.com/images/pr/l/v20230105004042/beautiful-bouquet-of-chocolates_1.jpg')"
+                 style="cursor:pointer;"
+                 src="https://static-assets-prod.fnp.com/images/pr/l/v20230105004042/beautiful-bouquet-of-chocolates_1.jpg"
+                 width="140" 
+                 height="180"
+                />
+                
+            </div>
+
+            <div style="width:250px; padding:15px; background:#fff1f8; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+                <img 
+                onclick="enlargeGift('https://cdn.grofers.com/app/assets/products/sliding_images/jpeg/3581729a-5990-44b0-ac6f-04b73e32f5f9.jpg?ts=1725538392')"
+                style="cursor:pointer;"
+                src="https://cdn.grofers.com/app/assets/products/sliding_images/jpeg/3581729a-5990-44b0-ac6f-04b73e32f5f9.jpg?ts=1725538392" 
+                width="140" 
+                height="180"/>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+function openGift() {
+document.getElementById('closedGift').style.display = 'none';
+document.getElementById('openedGift').style.display = 'block';
+}
+</script>
+
+
+<!-- Image Popup Modal -->
+<div id="giftModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter:blur(3px); justify-content:center; align-items:center;" onclick="closeGiftModal()">
+<img id="modalImg" src="" style="max-width:90%; max-height:90%; border-radius:20px; box-shadow:0 0 20px rgba(255,255,255,0.7);" />
+</div>
+
+
+<script>
+function enlargeGift(src) {
+document.getElementById("modalImg").src = src;
+document.getElementById("giftModal").style.display = "flex";
+}
+function closeGiftModal() {
+document.getElementById("giftModal").style.display = "none";
+}
+</script>
+<!-- Gift Slide End -->
+
+
+        <div class="slide" id="slide14">
+            <h2>💖 Thank You 💖</h2>
+            <p>Thank you, Riya, for being such a beautiful part of life. Always stay happy. You deserve the best. 💗🎀</p>
+        </div>
+
+        <div class="controls">
+            <button onclick="prev()">◀ Previous</button>
+            <button onclick="next()">Next ▶</button>
+            <button id="musicBtn" onclick="toggleMusic()" class="small">🔊 Pause</button>
+            <button onclick="goStart()" class="small">Home</button>
+        </div>
+
+    </div>
+
+    <!-- Surprise modal -->
+    <div id="surprise" class="modal" role="dialog" aria-modal="true">
+        <h3>🎉 Surprise! 🎉</h3>
+        <p>***Ek choti si shayari aapke liye 🤌🤌***<br></p></r>
+        <p>
+        Kabhi socha nahi tha ki 2025 mein mili ek nayi si dosti <br>
+        itni apni lagne lagegi… <br>
+        Par tu aayi, aur dil ko ek ajeeb sa sukoon mil gaya. <br>
+        Teri baaton mein wo halka sa pyaar, <br>
+        Teri hansi mein wo choti si roshni— <br>
+        sab kuch zindagi ko thoda aur khubsurat banata hai. <br>
+
+        Aaj tere birthday ke din, <br>
+        bas itna kehna hai ki tu bahut hi khaas hai. <br>
+
+        Dua karta hoon ki teri zindagi <br>
+        khushiyon se bhari rahe, <br>
+        tera dil kabhi udaas na ho, <br>
+        aur tera saaya hamesha meri zindagi mein bana rahe. <br>
+
+        Happy Birthday, meri pyaari dost. <br>
+        Tu waqai dil ko lagne wali insaan hai.
+        </p>
+
+        <button onclick="closeSurprise()">Close</button>
+    </div>
+
+    <!-- audio -->
+    <audio id="bgMusic" loop>
+        <source src="Riya Birthday Audio.mp3" type="audio/mpeg">
+    </audio>
+    
+
+    <script>
+        let current = 1;
+        const totalSlides = 14;
+        let autoMode = false;
+        let autoTimer = null;
+
+        function showSlide(n){
+            document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));
+            document.getElementById('slide'+n).classList.add('active');
+            current = n;
+        }
+        function next(){ if(current<totalSlides) showSlide(current+1); }
+        function prev(){ if(current>1) showSlide(current-1); }
+        function goStart(){ showSlide(1); }
+
+        // Auto-slide
+        
+
+        // Music control
+        const bg = document.getElementById('bgMusic');
+        bg.volume = 0.45;
+        bg.play().catch(()=>{});
+        function toggleMusic(){
+            const btn = document.getElementById('musicBtn');
+            if(bg.paused){ bg.play(); btn.textContent = '🔊 Pause'; }
+            else{ bg.pause(); btn.textContent = '🔈 Play'; }
+        }
+
+        // Floating hearts & bubbles generator
+        const floating = document.querySelector('.floating');
+        function makeBubble(){
+            const b = document.createElement('div');
+            b.className='bubble';
+            const size = 40 + Math.random()*120;
+            b.style.width = b.style.height = size+'px';
+            b.style.left = Math.random()*100+'%';
+            b.style.bottom = '-20px';
+            b.style.opacity = 0.65*Math.random()+0.2;
+            b.style.transform = 'translateY(0)';
+            floating.appendChild(b);
+            const duration = 6000 + Math.random()*6000;
+            b.animate([{transform:'translateY(0) scale(1)'},{transform:'translateY(-120vh) scale(0.6)'}],{duration:duration,iterations:1,easing:'linear'});
+            setTimeout(()=>b.remove(),duration+200);
+        }
+        setInterval(makeBubble,700);
+
+        // Cake cutting + confetti + fireworks
+        function cutCake(){
+            const cake = document.getElementById('cakeImg');
+            cake.src='cake2.png';
+            cake.style.transform='scale(1.08)';
+            document.getElementById('celeSound').play();
+            startConfetti();
+            startFireworks();
+            setTimeout(()=>cake.style.transform='scale(1)',800);
+            // jump to celebration slide after short delay
+            setTimeout(()=>showSlide(12),3000);
+        }
+
+        // Simple confetti
+        function startConfetti(){
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width=innerWidth; canvas.height=innerHeight; canvas.style.display='block';
+            const pieces=[]; for(let i=0;i<160;i++) pieces.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:4+Math.random()*8,vy:1+Math.random()*4,color:'hsl('+Math.random()*360+',80%,60%)'});
+            let frames=0;
+            function draw(){ ctx.clearRect(0,0,canvas.width,canvas.height); pieces.forEach(p=>{ ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,p.size,p.size); p.y+=p.vy; p.x+=Math.sin(frames/10 + p.x)*0.3; if(p.y>canvas.height) p.y= -10; }); frames++; if(frames<240) requestAnimationFrame(draw); else canvas.style.display='none'; }
+            draw();
+        }
+
+        // Fireworks (basic)
+        function startFireworks(){
+            const c = document.getElementById('fireCanvas');
+            const ctx = c.getContext('2d');
+            c.width=innerWidth; c.height=innerHeight; c.style.zIndex=3; c.style.display='block';
+            const sparks=[];
+            function spawn(){
+                const cx = Math.random()*c.width*0.8 + c.width*0.1, cy = Math.random()*c.height*0.5 + c.height*0.1;
+                const hue = Math.random()*360;
+                for(let i=0;i<60;i++) sparks.push({x:cx,y:cy,ax:Math.cos(i/10)* (2+Math.random()*4),ay:Math.sin(i/10)*(2+Math.random()*4),life:40+Math.random()*40,hue});
+            }
+            spawn(); spawn();
+            let frames=0;
+            function loop(){ ctx.fillStyle='rgba(0,0,0,0.06)'; ctx.fillRect(0,0,c.width,c.height); for(let i=sparks.length-1;i>=0;i--){ const s=sparks[i]; ctx.beginPath(); ctx.fillStyle='hsl('+s.hue+',80%,'+(50 - (s.life/2))+'%)'; ctx.arc(s.x,s.y,2.2,0,Math.PI*2); ctx.fill(); s.x+=s.ax*0.6; s.y+=s.ay*0.6 + 0.3*frames/30; s.life--; if(s.life<0) sparks.splice(i,1); } frames++; if(frames<180) requestAnimationFrame(loop); else c.style.display='none'; }
+            loop();
+        }
+
+        // Surprise modal
+        function openSurprise(){ document.getElementById('surprise').classList.add('show'); }
+        function closeSurprise(){ document.getElementById('surprise').classList.remove('show'); }
+
+        // keyboard navigation
+        document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight') next(); if(e.key==='ArrowLeft') prev(); if(e.key==='Escape') closeSurprise(); });
+
+        // ensure slide 1 visible on load
+        showSlide(1);
+    // --- AUTO SHUFFLE MODE ---
+let shuffleMode = false;
+if (shuffleMode) {
+    function shuffleSlides() {
+        let ids = Array.from({length: totalSlides}, (_, i) => i + 1);
+        for (let i = ids.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [ids[i], ids[j]] = [ids[j], ids[i]];
+        }
+        return ids;
+    }
+    var shuffled = shuffleSlides();
+    let index = 0;
+    function next() {
+        index = (index + 1) % shuffled.length;
+        showSlide(shuffled[index]);
+    }
+    function prev() {
+        index = (index - 1 + shuffled.length) % shuffled.length;
+        showSlide(shuffled[index]);
+    }
+}
+
+// --- DARK/PINK THEME TOGGLE ---
+function toggleTheme() {
+    document.body.classList.toggle('dark');
+}
+
+// Add theme button
+
+
+</script>
+</body>
+</html>
+
+
+
